@@ -1,0 +1,83 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  zero-prod
+
+  Sample SAM Template for zero-prod with Go Lambda functions
+
+Globals:
+  Function:
+    Timeout: 5
+    MemorySize: 128
+    Runtime: nodejs20.x
+    Architectures:
+      - x86_64
+
+Resources:
+  CreateUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./handlers/user/dist/
+      Handler: index.handler
+      Events:
+        CreateUserApi:
+          Type: Api
+          Properties:
+            Path: /users
+            Method: post
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref MyTable
+  
+  CreateProductFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./handlers/product
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Events:
+        CreateProductApi:
+          Type: Api
+          Properties:
+            Path: /products
+            Method: post
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref MyTable
+
+  MyTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-DynamoTable"
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: type
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+        - AttributeName: type
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+
+Outputs:
+  CreateUserFunction:
+    Description: "ARN da função CreateUser"
+    Value: !GetAtt CreateUserFunction.Arn
+
+  CreateUserFunctionIamRole:
+    Description: "ARN da role da função CreateUser"
+    Value: !GetAtt CreateUserFunctionRole.Arn
+
+  CreateProductFunction:
+    Description: "ARN da função CreateProduct"
+    Value: !GetAtt CreateProductFunction.Arn
+
+  CreateProductFunctionIamRole:
+    Description: "ARN da role da função CreateProduct"
+    Value: !GetAtt CreateProductFunctionRole.Arn
+
+  ApiUrl:
+    Description: "URL base da API REST gerada pelo SAM"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
