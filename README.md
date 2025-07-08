@@ -96,9 +96,13 @@ aws cloudformation delete-stack --stack-name nome_da_stack
 ## 📸 Imagens do Projeto (exemplos)
 
 ### ✅ Lambda Deploy com sucesso
+![Lambda-Deploy=com-Sucesso](https://github.com/DaviRodrigues/AWS-Learning-Basics/blob/master/assets/Utilizando-Lambda-e-recebendo-sucesso-no-deploy.png)
 
 ### 📬 Request recebida com sucesso
+![Request-Recebida-com-Sucesso](https://github.com/DaviRodrigues/AWS-Learning-Basics/blob/master/assets/Request-no-Lambda-dando-certo.png)
 
 ### 📊 CloudWatch funcionando e registrando logs
+![CloudWatch-Funcionando-e-Registrando-Logs](https://github.com/DaviRodrigues/AWS-Learning-Basics/blob/master/assets/CloudWatch-Funcionando-e-registrando-logs.png)
 
 ### 💾 Dados armazenados no DynamoDB
+![Dados-Armazenados-no-DynamoDB](https://github.com/DaviRodrigues/AWS-Learning-Basics/blob/master/assets/Dados-inseridos-no-DynamoDB.png)
